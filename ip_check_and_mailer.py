@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+__DATE__ = '12.10.2015'
+__AUTHOR__ = 'cemonatk'
+
 import smtplib,urllib,time
 from email.mime.text import MIMEText
 
