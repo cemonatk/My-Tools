@@ -14,9 +14,7 @@ def ipcheck():
 		mail = "IP adress still the same and %s " % ip
 	else:
 		mail = "New IP adress is %s " % ip
-		f = open('ip.txt','w')
-		f.write(ip)
-		f.close()
+		open('ip.txt','w').write(ip)
 	msg = MIMEText(mail)
 	msg["Subject"] = "Server IP Adress"
 	msg["From"] = " yourmail  @gmail.com"
