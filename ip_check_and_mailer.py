@@ -16,7 +16,7 @@ def ipcheck():
 	server.login(transmitter,password)
 	ip = urllib.URLopener().open("http://echoip.com/").readline()
 	if ip in open('ip.txt','a+').read():
-		#mail = "IP adress still the same and %s " % ip
+		#mail = "IP adress is still same and %s " % ip
 		pass
 	else:
 		mail = "New IP adress is %s " % ip
