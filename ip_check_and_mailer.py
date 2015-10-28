@@ -3,8 +3,12 @@
 __DATE__ = '12.10.2015'
 __AUTHOR__ = 'cemonatk'
 
-import smtplib,urllib,time
-from email.mime.text import MIMEText
+try:
+	import sys,smtplib,urllib,time
+	from email.mime.text import MIMEText
+except ImportError,module:
+	sys.stdout.write("%s" % module)
+	raise SystemExit(0)
 
 receiver    = "xxxx@gmail.com"
 transmitter = "yourmail@gmail.com"
