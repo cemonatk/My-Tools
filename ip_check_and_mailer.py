@@ -4,10 +4,10 @@ __DATE__ = '12.10.2015'
 __AUTHOR__ = 'cemonatk'
 
 try:
-	import sys,smtplib,urllib,time
+	import sys,smtplib,urllib,time,aaaaa
 	from email.mime.text import MIMEText
-except ImportError,module:
-	sys.stdout.write("%s" % module)
+except ImportError,m:
+	print m
 	raise SystemExit(0)
 
 receiver    = "xxxx@gmail.com"
