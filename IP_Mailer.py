@@ -4,7 +4,7 @@ __DATE__ = '12.10.2015'
 __AUTHOR__ = 'cemonatk'
 
 try:
-	import sys,smtplib,urllib,time;from email.mime.text import MIMEText
+	import sys,smtplib,urllib;from time import sleep;from email.mime.text import MIMEText
 except ImportError,m:
 	print m;raise SystemExit(0)
 
